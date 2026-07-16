@@ -1,0 +1,8 @@
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.csproj.AssemblyReference.cache
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\rpswa.dswa.cache.json
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.AssemblyInfoInputs.cache
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.AssemblyInfo.cs
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.csproj.CoreCompileInputs.cache
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\aliay\Projects\TransactionsBackend\TransactionsBackend\obj\Debug\net10.0\TransactionsBackend.MvcApplicationPartsAssemblyInfo.cache

@@ -41,7 +41,7 @@ public class UserService : IUserService
             .ToListAsync();
     }
 
-    public async Task<UserResponseDto?> GetByIdAsync(Guid id, Guid requesterId, string requesterRole)
+    public async Task<UserResponseDto?> GetUserByIdAsync(Guid id, Guid requesterId, string requesterRole)
     {
         if (requesterRole != Roles.Admin && requesterId != id)
         {
@@ -56,7 +56,7 @@ public class UserService : IUserService
     }
 
     /// <summary>Admin-only: create a new user account.</summary>
-    public async Task<UserResponseDto?> CreateAsync(CreateUserDto dto)
+    public async Task<UserResponseDto?> CreateUserAsync(CreateUserDto dto)
     {
         if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
         {

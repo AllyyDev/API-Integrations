@@ -26,10 +26,10 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Lists users. Admins see all; regular users see only themselves.
     /// </summary>
-    [HttpGet]
+    [HttpGet("GetAllUsers")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(IReadOnlyList<UserResponseDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAllUsers()
     {
         var (userId, role) = GetCurrentUser();
         var users = await _userService.GetAllAsync(userId, role);
@@ -39,15 +39,15 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Gets a user by id. Admins: any user. Users: own profile only.
     /// </summary>
-    [HttpGet("{id:guid}")]
+    [HttpGet("GetUserById/{id:guid}")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> GetUserById(Guid id)
     {
         var (userId, role) = GetCurrentUser();
-        var user = await _userService.GetByIdAsync(id, userId, role);
+        var user = await _userService.GetUserByIdAsync(id, userId, role);
 
         if (user is null)
         {
@@ -62,31 +62,31 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Creates a new user account. Admin only.
     /// </summary>
-    [HttpPost]
+    [HttpPost("CreateUser")]
     [Authorize(Roles = Roles.Admin)]
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateUserDto dto)
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
     {
-        var user = await _userService.CreateAsync(dto);
+        var user = await _userService.CreateUserAsync(dto);
 
         if (user is null)
         {
             return BadRequest(new { message = "Unable to create user. Check email uniqueness and role value." });
         }
 
-        return CreatedAtAction(nameof(GetById), new { id = user.Id }, user);
+        return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
     }
 
     /// <summary>
     /// Updates personal information. Admins: any user. Users: own profile only.
     /// </summary>
-    [HttpPut("{id:guid}")]
+    [HttpPut("UpdateUser/{id:guid}")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(UserResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserDto dto)
+    public async Task<IActionResult> UpdateUser(Guid id, [FromBody] UpdateUserDto dto)
     {
         var (userId, role) = GetCurrentUser();
         var user = await _userService.UpdateAsync(id, dto, userId, role);
@@ -104,11 +104,11 @@ public class UsersController : ControllerBase
     /// <summary>
     /// Deletes a user and all related transactions. Admin only.
     /// </summary>
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("DeleteUser/{id:guid}")]
     [Authorize(Roles = Roles.Admin)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> DeleteUser(Guid id)
     {
         var deleted = await _userService.DeleteAsync(id);
 

@@ -2,8 +2,6 @@
 
 A sample ASP.NET Core 8 Web API demonstrating **JWT authentication**, **role-based authorization** (Admin / User), and **CRUD endpoints** for user profiles and financial transactions.
 
-Built as a portfolio / gig example with a clean controller → service → data layer structure.
-
 ## Project Structure
 
 ```

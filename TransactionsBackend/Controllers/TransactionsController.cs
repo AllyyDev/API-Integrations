@@ -26,28 +26,28 @@ public class TransactionsController : ControllerBase
     /// <summary>
     /// Lists transactions. Admins see all; users see only their own.
     /// </summary>
-    [HttpGet]
+    [HttpGet("GetAllTransactions")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(IReadOnlyList<TransactionResponseDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAllTransactions()
     {
         var (userId, role) = GetCurrentUser();
-        var transactions = await _transactionService.GetAllAsync(userId, role);
+        var transactions = await _transactionService.GetAllTransactionsAsync(userId, role);
         return Ok(transactions);
     }
 
     /// <summary>
     /// Gets a transaction by id. Admins: any. Users: own only.
     /// </summary>
-    [HttpGet("{id:guid}")]
+    [HttpGet("GetTransactionById/{id:guid}")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(TransactionResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<IActionResult> GetTransactionById(Guid id)
     {
         var (userId, role) = GetCurrentUser();
-        var transaction = await _transactionService.GetByIdAsync(id, userId, role);
+        var transaction = await _transactionService.GetTransactionByIdAsync(id, userId, role);
 
         if (transaction is null)
         {
@@ -60,35 +60,35 @@ public class TransactionsController : ControllerBase
     /// <summary>
     /// Creates a transaction. Users create for themselves; admins may set UserId.
     /// </summary>
-    [HttpPost]
+    [HttpPost("AddTransaction")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(TransactionResponseDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromBody] CreateTransactionDto dto)
+    public async Task<IActionResult> AddTransaction([FromBody] CreateTransactionDto dto)
     {
         var (userId, role) = GetCurrentUser();
-        var transaction = await _transactionService.CreateAsync(dto, userId, role);
+        var transaction = await _transactionService.AddTransactionAsync(dto, userId, role);
 
         if (transaction is null)
         {
             return BadRequest(new { message = "Unable to create transaction. Verify target user exists." });
         }
 
-        return CreatedAtAction(nameof(GetById), new { id = transaction.Id }, transaction);
+        return CreatedAtAction(nameof(GetTransactionById), new { id = transaction.Id }, transaction);
     }
 
     /// <summary>
     /// Updates a transaction. Admins: any. Users: own only.
     /// </summary>
-    [HttpPut("{id:guid}")]
+    [HttpPut("UpdateTransaction/{id:guid}")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(typeof(TransactionResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTransactionDto dto)
+    public async Task<IActionResult> UpdateTransaction(Guid id, [FromBody] UpdateTransactionDto dto)
     {
         var (userId, role) = GetCurrentUser();
-        var transaction = await _transactionService.UpdateAsync(id, dto, userId, role);
+        var transaction = await _transactionService.UpdateTransactionAsync(id, dto, userId, role);
 
         if (transaction is null)
         {
@@ -101,14 +101,14 @@ public class TransactionsController : ControllerBase
     /// <summary>
     /// Deletes a transaction. Admins: any. Users: own only.
     /// </summary>
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("DeleteTransaction/{id:guid}")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.User}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<IActionResult> DeleteTransaction(Guid id)
     {
         var (userId, role) = GetCurrentUser();
-        var deleted = await _transactionService.DeleteAsync(id, userId, role);
+        var deleted = await _transactionService.DeleteTransactionAsync(id, userId, role);
 
         if (!deleted)
         {

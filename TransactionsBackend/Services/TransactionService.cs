@@ -20,7 +20,7 @@ public class TransactionService : ITransactionService
         _context = context;
     }
 
-    public async Task<IReadOnlyList<TransactionResponseDto>> GetAllAsync(Guid requesterId, string requesterRole)
+    public async Task<IReadOnlyList<TransactionResponseDto>> GetAllTransactionsAsync(Guid requesterId, string requesterRole)
     {
         var query = _context.Transactions.AsNoTracking();
 
@@ -36,7 +36,7 @@ public class TransactionService : ITransactionService
             .ToListAsync();
     }
 
-    public async Task<TransactionResponseDto?> GetByIdAsync(Guid id, Guid requesterId, string requesterRole)
+    public async Task<TransactionResponseDto?> GetTransactionByIdAsync(Guid id, Guid requesterId, string requesterRole)
     {
         var transaction = await _context.Transactions.AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id);
@@ -54,7 +54,7 @@ public class TransactionService : ITransactionService
         return MapToDto(transaction);
     }
 
-    public async Task<TransactionResponseDto?> CreateAsync(CreateTransactionDto dto, Guid requesterId, string requesterRole)
+    public async Task<TransactionResponseDto?> AddTransactionAsync(CreateTransactionDto dto, Guid requesterId, string requesterRole)
     {
         // Admins may assign transactions to any user; regular users always use their own id.
         var targetUserId = requesterRole == Roles.Admin && dto.UserId.HasValue
@@ -82,7 +82,7 @@ public class TransactionService : ITransactionService
         return MapToDto(transaction);
     }
 
-    public async Task<TransactionResponseDto?> UpdateAsync(Guid id, UpdateTransactionDto dto, Guid requesterId, string requesterRole)
+    public async Task<TransactionResponseDto?> UpdateTransactionAsync(Guid id, UpdateTransactionDto dto, Guid requesterId, string requesterRole)
     {
         var transaction = await _context.Transactions.FindAsync(id);
         if (transaction is null)
@@ -121,7 +121,7 @@ public class TransactionService : ITransactionService
         return MapToDto(transaction);
     }
 
-    public async Task<bool> DeleteAsync(Guid id, Guid requesterId, string requesterRole)
+    public async Task<bool> DeleteTransactionAsync(Guid id, Guid requesterId, string requesterRole)
     {
         var transaction = await _context.Transactions.FindAsync(id);
         if (transaction is null)

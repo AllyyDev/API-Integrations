@@ -32,16 +32,16 @@ TransactionsBackend/
 | Endpoint | Admin | User |
 |---|---|---|
 | `POST /api/auth/login` | ✓ (public) | ✓ (public) |
-| `GET /api/users` | All users | Own profile only |
-| `GET /api/users/{id}` | Any user | Own profile only |
-| `POST /api/users` | ✓ | ✗ |
-| `PUT /api/users/{id}` | Any user | Own profile only |
-| `DELETE /api/users/{id}` | ✓ | ✗ |
-| `GET /api/transactions` | All | Own only |
-| `GET /api/transactions/{id}` | Any | Own only |
-| `POST /api/transactions` | Any user (via `UserId`) | Own only |
-| `PUT /api/transactions/{id}` | Any | Own only |
-| `DELETE /api/transactions/{id}` | Any | Own only |
+| `GET /api/Users/GetAllUsers` | All users | Own profile only |
+| `GET /api/Users/GetUserById/{id}` | Any user | Own profile only |
+| `POST /api/Users/CreateUser` | ✓ | ✗ |
+| `PUT /api/Users/UpdateUser/{id}` | Any user | Own profile only |
+| `DELETE /api/Users/DeleteUser/{id}` | ✓ | ✗ |
+| `GET /api/Users/GetAllUsers` | All | Own only |
+| `GET /api/Transactions/GetTransactionById/{id}` | Any | Own only |
+| `POST /api/Transactions/AddTransaction` | Any user (via `UserId`) | Own only |
+| `PUT /api/Transactions/UpdateTransaction/{id}` | Any | Own only |
+| `DELETE /api/Transactions/DeleteTransaction/{id}` | Any | Own only |
 
 ## Demo Accounts
 
